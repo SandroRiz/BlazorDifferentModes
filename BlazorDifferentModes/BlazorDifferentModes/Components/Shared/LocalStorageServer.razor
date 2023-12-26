@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage ProtectedLocalStorage
+@rendermode InteractiveServer
+
+<div class="mt-3 mb-3">
+    <button class="btn btn-primary" @onclick="StoreKeyAsync">Write Local Storage</button>
+
+    <button class="btn btn-secondary" @onclick="GetValueAsync">Read Local Storage</button>
+
+
+    <p role="status">Current Color: @color</p>
+</div>
+
+@code {
+
+    string color;
+
+    private async Task StoreKeyAsync()
+    {
+        await ProtectedLocalStorage.SetAsync("myKey", "red");
+    }
+    private async Task GetValueAsync()
+    {
+        var result = await ProtectedLocalStorage.GetAsync<string>("myKey");
+
+        if (result.Success)
+        {
+            color = result.Value;
+        }
+    }
+}
